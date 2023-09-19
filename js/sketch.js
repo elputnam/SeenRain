@@ -26,6 +26,14 @@ let w, h;
 // Order of tiles
 let board = [];
 
+//CCapture
+// var capture = false; // default is to not capture frames, can be changed with button in browser
+var capturer = new CCapture({
+  format:'webm', 
+  workersPath: 'js/',
+  framerate: 6
+});
+
 function preload(){
   base = loadImage('assets/SeenRain_base.png');
   alley1 = loadImage('assets/SeenRain_alley1.png');
@@ -67,6 +75,7 @@ function setup() {
 }
 
 function draw() {
+  if (frameCount==1) capturer.start();
   background(random(360), 100, 100);
 
   //base
@@ -179,7 +188,11 @@ function draw() {
     }
   }
    
-    
+  capturer.capture(document.getElementById('defaultCanvas0'));  
+  if (frameCount==1800){
+    save_record();
+  }
+  print(frameCount);
   }
 
 
@@ -188,4 +201,8 @@ class Tile {
     this.index = i;
     this.img = img;    
   }
+}
+
+function save_record() {
+  capturer.save();
 }
